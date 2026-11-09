@@ -1,0 +1,54 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ReadTerraformState",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::hec-terraform-state-2026-unique12345"
+    },
+    {
+      "Sid": "ReadTerraformStateObject",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject"
+      ],
+      "Resource": "arn:aws:s3:::hec-terraform-state-2026-unique12345/hec/dev/terraform.tfstate"
+    },
+    {
+      "Sid": "ManageTerraformLockFile",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::hec-terraform-state-2026-unique12345/hec/dev/terraform.tfstate.tflock"
+    },
+    {
+      "Sid": "ReadApplicationBucketConfiguration",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketLocation",
+        "s3:GetBucketAcl",
+        "s3:GetBucketVersioning",
+        "s3:GetEncryptionConfiguration",
+        "s3:GetPublicAccessBlock",
+        "s3:GetBucketTagging",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::terraform-lab-s3-bucket-zeeshan"
+    },
+    {
+      "Sid": "WriteCodeBuildLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:ca-central-1:771965334880:log-group:/aws/codebuild/*:*"
+    }
+  ]
+}

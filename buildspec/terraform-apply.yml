@@ -1,0 +1,22 @@
+version: 0.2
+
+env:
+  variables:
+    TERRAFORM_VERSION: "1.10.5"
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y curl unzip
+      - curl -fsSLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      - unzip -o /tmp/terraform.zip -d /tmp
+      - install -m 0755 /tmp/terraform /usr/local/bin/terraform
+      - terraform version
+
+  build:
+    commands:
+      - cd terraform
+      - test -f tfplan
+      - terraform init -input=false
+      - terraform apply -input=false -no-color tfplan

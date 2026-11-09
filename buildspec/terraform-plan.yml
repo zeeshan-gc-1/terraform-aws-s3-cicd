@@ -1,0 +1,31 @@
+version: 0.2
+
+env:
+  variables:
+    TERRAFORM_VERSION: "1.10.5"
+
+phases:
+  install:
+    commands:
+      - apt-get update
+      - apt-get install -y curl unzip
+      - curl -fsSLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+      - unzip -o /tmp/terraform.zip -d /tmp
+      - install -m 0755 /tmp/terraform /usr/local/bin/terraform
+      - terraform version
+
+  build:
+    commands:
+      - cd terraform
+      - terraform init -input=false
+      - terraform plan -input=false -no-color -lock-timeout=5m -out=tfplan
+      - test -f tfplan
+
+artifacts:
+  files:
+    - terraform/*.tf
+    - terraform/**/*.tf
+    - terraform/.terraform.lock.hcl
+    - terraform/tfplan
+    - buildspec/terraform-apply.yml
+  discard-paths: no

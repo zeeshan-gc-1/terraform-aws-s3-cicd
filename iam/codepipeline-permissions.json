@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "UseGitHubConnection",
+      "Effect": "Allow",
+      "Action": [
+        "codeconnections:UseConnection"
+      ],
+      "Resource": "arn:aws:codeconnections:ca-central-1:771965334880:connection/127e9c15-6df9-4623-8ac0-b22bb8ac8f84"
+    },
+    {
+      "Sid": "AccessArtifactBucket",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetBucketVersioning",
+        "s3:GetBucketAcl",
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::terraform-lab-codepipeline-artifacts-771965334880"
+    },
+    {
+      "Sid": "ManagePipelineArtifacts",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion",
+        "s3:PutObject"
+      ],
+      "Resource": "arn:aws:s3:::terraform-lab-codepipeline-artifacts-771965334880/*"
+    }
+  ]
+}
