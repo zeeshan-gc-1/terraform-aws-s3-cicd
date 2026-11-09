@@ -8,7 +8,7 @@ variable "aws_region" {
 variable "bucket_name" {
   description = "Globally unique name for the application S3 bucket"
   type        = string
-  default     = "terraform-lab-s3-bucket-zeeshan-1856pm"
+  default     = "terraform-lab-s3-bucket-zeeshan-1913pm"
 }
 
 variable "environment" {
