@@ -7,8 +7,8 @@ env:
 phases:
   install:
     commands:
-      - apt-get update
-      - apt-get install -y curl unzip
+      - command -v curl
+      - command -v unzip
       - curl -fsSLo /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
       - unzip -o /tmp/terraform.zip -d /tmp
       - install -m 0755 /tmp/terraform /usr/local/bin/terraform
