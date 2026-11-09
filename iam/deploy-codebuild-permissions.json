@@ -41,7 +41,7 @@
         "s3:GetBucketPublicAccessBlock",
         "s3:PutBucketPublicAccessBlock"
       ],
-      "Resource": "arn:aws:s3:::terraform-lab-s3-bucket-zeeshan"
+      "Resource": "arn:aws:s3:::terraform-lab-s3-bucket-zeeshan-1751pm"
     },
     {
       "Sid": "WriteCodeBuildLogs",
