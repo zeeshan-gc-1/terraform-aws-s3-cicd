@@ -1,0 +1,109 @@
+{
+  "pipeline": {
+    "name": "TerraformLab-Deployment-Pipeline",
+    "roleArn": "arn:aws:iam::771965334880:role/TerraformLab-CodePipeline-Role",
+    "artifactStore": {
+      "type": "S3",
+      "location": "terraform-lab-codepipeline-artifacts-771965334880"
+    },
+    "stages": [
+      {
+        "name": "Source",
+        "actions": [
+          {
+            "name": "GitHubSource",
+            "actionTypeId": {
+              "category": "Source",
+              "owner": "AWS",
+              "provider": "CodeStarSourceConnection",
+              "version": "1"
+            },
+            "configuration": {
+              "ConnectionArn": "arn:aws:codeconnections:ca-central-1:771965334880:connection/127e9c15-6df9-4623-8ac0-b22bb8ac8f84",
+              "FullRepositoryId": "zeeshan-gc-1/terraform-aws-s3-cicd",
+              "BranchName": "main",
+              "OutputArtifactFormat": "CODE_ZIP",
+              "DetectChanges": "true"
+            },
+            "outputArtifacts": [
+              {
+                "name": "SourceOutput"
+              }
+            ],
+            "runOrder": 1
+          }
+        ]
+      },
+      {
+        "name": "TerraformPlan",
+        "actions": [
+          {
+            "name": "CreateTerraformPlan",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "configuration": {
+              "ProjectName": "TerraformLab-Terraform-Plan"
+            },
+            "inputArtifacts": [
+              {
+                "name": "SourceOutput"
+              }
+            ],
+            "outputArtifacts": [
+              {
+                "name": "PlanOutput"
+              }
+            ],
+            "runOrder": 1
+          }
+        ]
+      },
+      {
+        "name": "ManualApproval",
+        "actions": [
+          {
+            "name": "ApproveTerraformApply",
+            "actionTypeId": {
+              "category": "Approval",
+              "owner": "AWS",
+              "provider": "Manual",
+              "version": "1"
+            },
+            "configuration": {
+              "CustomData": "Review the Terraform plan before approving infrastructure changes."
+            },
+            "runOrder": 1
+          }
+        ]
+      },
+      {
+        "name": "TerraformApply",
+        "actions": [
+          {
+            "name": "ApplyApprovedTerraformPlan",
+            "actionTypeId": {
+              "category": "Build",
+              "owner": "AWS",
+              "provider": "CodeBuild",
+              "version": "1"
+            },
+            "configuration": {
+              "ProjectName": "TerraformLab-Terraform-Apply"
+            },
+            "inputArtifacts": [
+              {
+                "name": "PlanOutput"
+              }
+            ],
+            "runOrder": 1
+          }
+        ]
+      }
+    ],
+    "version": 1
+  }
+}
